@@ -4,7 +4,7 @@ import Router from './route/Router';
 export default function App() {
   return (
     <>
-      xin chào các bạn
+      hello word
       <Router />
     </>
   );
