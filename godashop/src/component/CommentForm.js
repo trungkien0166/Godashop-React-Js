@@ -2,7 +2,7 @@ import React from 'react';
 import ReactStars from "react-rating-stars-component";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-export default function CommentForm() {
+export default function CommentForm({ handleSubmitComment }) {
     const formik = useFormik({
         // khởi tạo giá trị yarn
         initialValues: {
@@ -21,11 +21,9 @@ export default function CommentForm() {
             description: Yup.string()
                 .required('Vui lòng nhập mô tả'),
         }),
-
         // khi dữ liệu hợp lệ chạy lên onSubmit
         onSubmit: async values => {
-            // alert('haha');
-            console.log(values);
+            handleSubmitComment(values)
         }
     });
     return (

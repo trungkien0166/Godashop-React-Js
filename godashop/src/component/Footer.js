@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import LoginForm from './LoginForm';
 
 export default function Footer() {
     return (
@@ -13,12 +15,12 @@ export default function Footer() {
                                         <div className="footerLink">
                                             <h4>Danh mục</h4>
                                             <ul className="list-unstyled">
-                                                <li><a href="#">Kem Chống Nắng </a></li>
-                                                <li><a href="#">Kem Dưỡng Da </a></li>
-                                                <li><a href="#">Kem Trị Mụn </a></li>
-                                                <li><a href="#">Kem Trị Thâm Nám </a></li>
-                                                <li><a href="#">Sữa Rửa Mặt </a></li>
-                                                <li><a href="#">Sữa Tắm </a></li>
+                                                <li><Link to="#">Kem Chống Nắng </Link></li>
+                                                <li><Link to="#">Kem Dưỡng Da </Link></li>
+                                                <li><Link to="#">Kem Trị Mụn </Link></li>
+                                                <li><Link to="#">Kem Trị Thâm Nám </Link></li>
+                                                <li><Link to="#">Sữa Rửa Mặt </Link></li>
+                                                <li><Link to="#">Sữa Tắm </Link></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -108,6 +110,7 @@ export default function Footer() {
                 </div>
                 {/* END REGISTER DIALOG */}
                 {/* LOGIN DIALOG */}
+                <LoginForm />
                 <div className="modal fade" id="modal-login" role="dialog">
                     <div className="modal-dialog">
                         <div className="modal-content">

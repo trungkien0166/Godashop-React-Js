@@ -29,10 +29,24 @@ export default function ProductInner({ product }) {
             setIsLoaded(true);
         }
     }
+    const handleSubmitComment = async (values) => {
+        try {
+            // console.log(new Date());
+            // console.log(page);
+            await axiosNonAuthInstance().post
+                (`/products/${product.id}/comments`, JSON.stringify(values));
+            getComments();
+            setIsLoaded(true);
+        }
+        catch (error) {
+            console.log(error)
+            setIsLoaded(true);
+        }
+    }
     useEffect(() => {
         getComments();
         //eslint-disable-next-line
-    })
+    }, [])
     return (
         <>
             <div className="row product-info">
@@ -83,7 +97,10 @@ export default function ProductInner({ product }) {
                                 {{ __html: DOMPurify.sanitize(product.description) }} >
                             </div>
                             <div role="tabpanel" className="tab-pane" id="product-comment">
-                                <CommentForm />
+                                {
+                                    isLoaded ? <CommentForm handleSubmitComment={handleSubmitComment} />
+                                        : null
+                                }
                                 <div className="comment-list">
                                     {
                                         comments.map((comment, index) =>
@@ -95,7 +112,8 @@ export default function ProductInner({ product }) {
                                                     edit={false}
                                                     size={24}
                                                     activeColor="#ffd700"
-                                                    value={comment.star}
+                                                    // nhận con số , không nhận chuỗi số
+                                                    value={Number(comment.star)}
                                                 />
                                                 <span className="by">{comment.fullname}</span>
                                                 <p>{comment.description}</p>
