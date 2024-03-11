@@ -7,7 +7,8 @@ export default function LoginForm() {
         <>
             {/* END REGISTER DIALOG */}
             {/* LOGIN DIALOG */}
-            <div className="modal" id="modal-login" role="dialog" style={{ display: 'block' }}>
+            {/* style={{ display: 'block' }} */}
+            <div className="modal" id="modal-login" role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header bg-color">
@@ -41,10 +42,10 @@ export default function LoginForm() {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div >
             {/* &lt; !--END LOGIN DIALOG-- &gt;
                 &lt; !--FORTGOT PASSWORD DIALOG-- &gt; */}
-            <div className="modal fade" id="modal-forgot-password" role="dialog">
+            <div className="modal fade" id="modal-forgot-password" role="dialog" >
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header bg-color">
@@ -64,7 +65,7 @@ export default function LoginForm() {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div >
             {/* END FORTGOT PASSWORD DIALOG */}
             {/* CART DIALOG */}
             <div className="modal fade" id="modal-cart-detail" role="dialog">

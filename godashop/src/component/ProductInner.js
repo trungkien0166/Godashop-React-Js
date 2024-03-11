@@ -119,7 +119,6 @@ export default function ProductInner({ product }) {
                                                 <p>{comment.description}</p>
                                             </>
                                         )}
-
                                 </div>
                             </div>
                         </div>
@@ -135,3 +134,4 @@ export default function ProductInner({ product }) {
         </>
     );
 }
+
