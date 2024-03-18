@@ -1,7 +1,30 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+import { POPUP_CART, POPUP_LOGIN, POPUP_REGISTER } from '../const/PopupConstant';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Header() {
+    const dispatch = useDispatch();
+    const handlePopupRegister = () => {
+        // đẩy  action lên store để reducer xử lý 
+        const action = { type: POPUP_REGISTER };
+        dispatch(action)
+    }
+    const handlePopupLogin = () => {
+        // đẩy  action lên store để reducer xử lý 
+        const action = { type: POPUP_LOGIN };
+        dispatch(action)
+    }
+    const handlePopupCart = () => {
+        // đẩy  action lên store để reducer xử lý 
+        const action = { type: POPUP_CART };
+        dispatch(action)
+    }
+    // đăng ký với store  về thay đổi trạng thái đăng nhập /xuất nhập 
+    const isLogin = useSelector(state => state.AuthReducer.isLogin);
+    console.log('Trạng thái login', isLogin)
     return (
         <>
             <div>
@@ -35,10 +58,12 @@ export default function Header() {
                             <div className="col-md-6 col-sm-10 col-xs-11">
                                 <ul className="list-inline pull-right top-right">
                                     <li className="account-login">
-                                        <Link to="#" className="btn-register">Đăng Ký</Link>
+                                        <Link to="#" onClick={() => handlePopupRegister()}
+                                            className="btn-register">Đăng Ký</Link>
                                     </li>
                                     <li>
-                                        <Link to="#" className="btn-login">Đăng Nhập</Link>
+                                        <Link to="#" onClick={() => handlePopupLogin()}
+                                            className="btn-login">Đăng Nhập</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -94,12 +119,12 @@ export default function Header() {
                         </ul>
                         <span className="hidden-lg hidden-md experience">Trải nghiệm cùng sản phẩm của Goda</span>
                         <ul className="nav navbar-nav navbar-right">
-                            <li className="cart"><Link to="#" className="btn-cart-detail" title="Giỏ Hàng"><i className="fa fa-shopping-cart" /> <span className="number-total-product">6</span></Link></li>
+                            <li className="cart"><Link onClick={() => handlePopupCart()} to="#" className="btn-cart-detail" title="Giỏ Hàng"><i className="fa fa-shopping-cart" /> <span className="number-total-product">6</span></Link></li>
                         </ul>
                     </div>
                 </nav>
             </div>
-
+            <ToastContainer />
         </>
     );
 }

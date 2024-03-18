@@ -1,150 +1,23 @@
-/* eslint-disable jsx-a11y/no-redundant-roles */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { POPUP_CART } from '../const/PopupConstant';
 import { Link } from 'react-router-dom';
-import { POPUP_CLOSE, POPUP_FORGOT_PASS, POPUP_LOGIN } from '../const/PopupConstant';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import { axiosNonAuthInstance } from '../helper/util';
-import { toast } from 'react-toastify';
-import { LOGIN } from '../const/AuthConstant';
-export default function LoginForm() {
+
+export default function Cart() {
     const popup_type = useSelector(state => state.PopupReducer.popup_type);
     console.log('popup_type', popup_type);
     //fade là không hiển thị 
-    const fade = popup_type === POPUP_LOGIN ? '' : 'fade';
-    const display = popup_type === POPUP_LOGIN ? 'block' : 'none';
+    const fade = popup_type === POPUP_CART ? '' : 'fade';
+    const display = popup_type === POPUP_CART ? 'block' : 'none';
     const dispatch = useDispatch();
 
     const handleClosePopup = () => {
-        const action = { type: POPUP_CLOSE };
+        const action = { type: POPUP_CART };
         dispatch(action);
     }
-    const handlePorgotPassword = () => {
-        // đẩy  action lên store để reducer xử lý 
-        const action = { type: POPUP_FORGOT_PASS };
-        dispatch(action)
-    }
-
-    const formik = useFormik({
-        // khởi tạo giá trị yarn
-        initialValues: {
-            //dựa vào name của thẻ input
-            email: '',
-            password: '',
-        },
-        // check dữ liệu 
-        validationSchema: Yup.object({
-            password: Yup.string()
-                .required('Vui lòng nhập mật khẩu'),
-            email: Yup.string()
-                .required('Vui lòng nhập email'),
-        }),
-        onSubmit: async values => {
-            handleClosePopup();
-            //call api để đăng nhập 
-            try {
-                // console.log(new Date());
-                // console.log(page);
-                const response = await axiosNonAuthInstance().post
-                    (`/login`, JSON.stringify(values));
-                const data = response.data;
-                console.log(data);
-                toast.success('Đăng nhập thành công');
-                //dispatch action bao gồm cả access token và thông tin user lên store
-                const action = {
-                    type: LOGIN,
-                    payload: {
-                        access_token: data.access_token,
-                        loggedUser: data.user
-                    }
-                }
-                dispatch(action);
-            }
-            catch (error) {
-                console.log(error);
-                toast.error(error?.response?.data || error.message)
-            }
-        }
-    });
     return (
         <>
-            {/* END REGISTER DIALOG */}
-            {/* LOGIN DIALOG */}
-            {/* style={{ display: 'block' }} */}
-            <div className={'modal' + fade} id="modal-login" role="dialog" style={{ display: display }}>
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header bg-color">
-                            <button onClick={() => handleClosePopup()
-                            } type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3 className="modal-title text-center">Đăng nhập</h3>
-                            {/* Google login */}
-                            <br />
-                            <div className="text-center">
-                                <Link className="btn btn-primary google-login" to="#"><i className="fab fa-google" /> Đăng nhập bằng Google</Link>
-                                {/* Facebook login */}
-                                <Link className="btn btn-primary facebook-login" to="#"><i className="fab fa-facebook-f" /> Đăng nhập bằng Facebook</Link>
-                            </div>
-                        </div>
-                        <form action="#" method="POST" onSubmit={formik.handleSubmit}>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <input type="email" name="email" className="form-control" placeholder="Email" onChange={formik.handleChange}
-                                        value={formik.values.email} onBlur={formik.handleBlur} />
-                                    {
-                                        formik.touched.email && formik.errors.email ?
-                                            <div className="text-danger"> {formik.errors.email} </div> : null
-                                    }
-                                </div>
-                                <div className="form-group">
-                                    <input type="password" name="password" className="form-control" placeholder="Mật khẩu" onChange={formik.handleChange}
-                                        value={formik.values.password} onBlur={formik.handleBlur} />
-                                    {
-                                        formik.touched.password && formik.errors.password ?
-                                            <div className="text-danger"> {formik.errors.password} </div> : null
-                                    }
-                                </div>
-                                <input type="hidden" name="reference" defaultValue />
-                            </div>
-                            <div className="modal-footer">
-                                <button type="submit" className="btn btn-primary">Đăng Nhập</button><br />
-                                <div className="text-left">
-                                    <Link to="#" className="btn-register">Bạn chưa là thành viên? Đăng kí ngay!</Link>
-                                    <Link onClick={() => handlePorgotPassword()
-                                    } to="#" className="btn-forgot-password">Quên Mật Khẩu?</Link>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div >
-            {/* &lt; !--END LOGIN DIALOG-- &gt;
-                &lt; !--FORTGOT PASSWORD DIALOG-- &gt; */}
-            <div className="modal fade" id="modal-forgot-password" role="dialog" >
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header bg-color">
-                            <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3 className="modal-title text-center">Quên mật khẩu</h3>
-                        </div>
-                        <form action="#" method="POST">
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <input name="email" type="email" className="form-control" placeholder="Email" required />
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <input type="hidden" name="reference" defaultValue />
-                                <button type="submit" className="btn btn-primary">GỬI</button><br />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div >
-            {/* END FORTGOT PASSWORD DIALOG */}
-            {/* CART DIALOG */}
-            <div className="modal fade" id="modal-cart-detail" role="dialog">
+            <div className={'modal' + fade} id="modal-cart-detail" role="dialog" style={{ display: display }}>
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header bg-color">

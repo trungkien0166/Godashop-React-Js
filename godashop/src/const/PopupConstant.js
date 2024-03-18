@@ -1,0 +1,5 @@
+export const POPUP_LOGIN = "POPUP_LOGIN";
+export const POPUP_REGISTER = "POPUP_REGISTER";
+export const POPUP_FORGOT_PASS = "POPUP_FORGOT_PASS";
+export const POPUP_CART = "POPUP_CART";
+export const POPUP_CLOSE = "POPUP_CLOSE";
