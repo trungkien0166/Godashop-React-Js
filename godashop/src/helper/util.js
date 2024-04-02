@@ -70,12 +70,56 @@ export const getProductId = (slug) => {
 export const createLinkCategory = (category) => {
     return `/danh-muc/${slugify(category.name + '-' + category.id)}`
 }
-// /san-pham/kem-lam-trang-da-5-in-1-2878.html
+// san-pham/kem-lam-trang-da-5-in-1-2878.html
 export const createLinkProduct = (product) => {
     return `/san-pham/${slugify(product.name + '-' + product.id)}.html`
 }
-
+// //don-hang/chi-tiet-don-hang-5.html
+export const createLinkOrderDetail = (order) => {
+    return `/don-hang/chi-tiet-don-hang-${order.id}.html`;
+}
 export const formatMoney = (money) => {
     return numeral(money).format('0,0');
 }
 
+export const getOrderId = (slug) => {
+    if (!slug) return '';
+
+    const slugParts = slug.split('.html'); // cắt chuỗi ở dấu ngoặc 
+    // Id nằm ở phần tử cuối 
+    // const categoryId= slugParts[slugParts.length - 1];
+    const leftPart = slugParts[0];
+    const parts = leftPart.split('-');
+    const orderId = parts.pop();
+    return orderId;
+}
+// Viết hàm cập nhật thêm 1 sản phẩm vào giỏ hàng
+export const pre_add_to_cart = (arr, input) => {
+    // kiểm tra  có bị trùng không ,nếu trung trả về số phần tử bị trùng
+    // nếu không trùng trả về giá trị -1
+    // giúp tăng tốc tính toán , không ảnh hưởng đến state trước
+    const newArray = JSON.parse(JSON.stringify(arr));
+
+    const index = newArray.findIndex((item) => item.id === input.id);
+    if (index !== -1) {
+        newArray[index].qty++;
+    }
+    else {
+        newArray.push(input)
+    }
+    return newArray;
+
+}
+export const pre_remove_to_cart = (arr, id) => {
+    // kiểm tra có bị trùng không ,nếu trung trả về số phần tử bị trùng
+    // nếu không trùng trả về giá trị -1
+    // giúp tăng tốc tính toán,không ảnh hưởng đến state trước
+    const newArray = JSON.parse(JSON.stringify(arr));
+
+    const index = newArray.findIndex((item) => item.id === id);
+    if (index !== -1) {
+        newArray.splice(index, 1)
+    }
+    return newArray;
+
+}

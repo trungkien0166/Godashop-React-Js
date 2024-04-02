@@ -1,7 +1,54 @@
 import React from 'react';
-import { createLinkProduct, formatMoney } from '../helper/util';
+import { axiosNonAuthInstance, createLinkProduct, formatMoney } from '../helper/util';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { ADD_TO_CART } from '../const/CartConstant';
+import { toast } from 'react-toastify';
 export default function Product({ product }) {
+    const dispatch = useDispatch();
+    // const handleAddProductToCart = async (id) => {
+    //     try {
+    //         // console.log(new Date());
+    //         // console.log(page);
+    //         const response = await axiosNonAuthInstance().get(`/products/${id}`);
+    //         const product = response.data;
+    //         const item = {
+    //             id: product.id,
+    //             name: product.name,
+    //             feauted_image: product.feauted_image,
+    //             sale_price: product.sale_price,
+    //             qty: 1
+    //         }
+    //         const action ={type:ADD}
+    //     }
+    //     catch (error) {
+    //         console.log(error);
+    //         setIsLoaded(true);
+    //     }
+    // }
+
+    const handleAddProductToCart = async (id) => {
+        try {
+            console.log(new Date());
+            const response = await axiosNonAuthInstance().get(`/products/${id}`);
+            const product = response.data;
+            const item = {
+                id: product.id,
+                name: product.name,
+                featured_image: product.featured_image,
+                sale_price: product.sale_price,
+                qty: 1
+            };
+
+            // tạo action để dispatch lên store
+            const action = { type: ADD_TO_CART, payload: item };
+            dispatch(action);
+        }
+        catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data || error.message)
+        }
+    }
     return (
         <>
             <div className="product-container">
@@ -23,9 +70,9 @@ export default function Product({ product }) {
                 </div >
                 <div className="button-product-action clearfix">
                     <div className="cart icon">
-                        <a className="btn btn-outline-inverse buy" href="!" title="Thêm vào giỏ">
+                        <Link className="btn btn-outline-inverse buy" to="#" onClick={() => handleAddProductToCart(product.id)} title="Thêm vào giỏ">
                             Thêm vào giỏ <i className="fa fa-shopping-cart" />
-                        </a>
+                        </Link>
                     </div>
                     <div className="quickview icon">
                         <Link className="btn btn-outline-inverse" to={createLinkProduct(product)} title="Xem nhanh">

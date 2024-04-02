@@ -8,6 +8,10 @@ import DeliveryPolicy from '../page/DeliveryPolicy';
 import ReturnPolicy from '../page/ReturnPolicy';
 import Contact from '../page/Contact';
 import ProductDetail from '../page/ProductDetail';
+import Account from '../page/Account';
+import ProtectedRouter from './ProtectedRouter';
+import Order from '../page/Order';
+import OrderDetail from '../page/OrderDetail';
 //trang chủ
 export default function Router() {
     return (
@@ -23,8 +27,15 @@ export default function Router() {
                     <Route path="/chinh-sach-doi-tra.html" element={<ReturnPolicy />} />
                     <Route path="/lien-he.html" element={<Contact />} />
                     <Route path="/san-pham/:slug" element={<ProductDetail />} />
+                    <Route path="/thong-tin-tai-khoan.html" element=
+                        {<ProtectedRouter>< Account /></ProtectedRouter>} />
+                    <Route path="/don-hang-cua-toi.html" element=
+                        {<ProtectedRouter>< Order /></ProtectedRouter>} />
+                    <Route path="/don-hang/:slug" element=
+                        {<ProtectedRouter>< OrderDetail /></ProtectedRouter>} />
                 </Route>
-            </Routes>
+
+            </Routes >
         </>
     );
 }

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { POPUP_CART, POPUP_LOGIN, POPUP_REGISTER } from '../const/PopupConstant';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LOGOUT } from '../const/AuthConstant';
 
 export default function Header() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const handlePopupRegister = () => {
         // đẩy  action lên store để reducer xử lý 
@@ -22,9 +24,22 @@ export default function Header() {
         const action = { type: POPUP_CART };
         dispatch(action)
     }
-    // đăng ký với store  về thay đổi trạng thái đăng nhập /xuất nhập 
+    //Đăng ký với store về thay đổi trạng  đăng nhập / đăng xuất 
     const isLogin = useSelector(state => state.AuthReducer.isLogin);
-    console.log('Trạng thái login', isLogin)
+    const loggedUser = useSelector(state => state.AuthReducer.loggedUser);
+    const cartItems = useSelector(state => state.CartReducer.cartItems);
+    const totalItem = cartItems.reduce((total, item) => total + item.qty, 0)
+    // console.log('Trạng thái login', isLogin);
+    const handleLogout = (e) => {
+        // ngăn chặn chạy href thẻ a
+        e.preventDefault();
+        // đẩy action lên store để  reducer xử lý
+        const action = { type: LOGOUT };
+        dispatch(action);
+        // điều hướng về trang chủ (không tải lại toàn bộ trang )
+        navigate('/');
+    }
+
     return (
         <>
             <div>
@@ -58,12 +73,31 @@ export default function Header() {
                             <div className="col-md-6 col-sm-10 col-xs-11">
                                 <ul className="list-inline pull-right top-right">
                                     <li className="account-login">
-                                        <Link to="#" onClick={() => handlePopupRegister()}
-                                            className="btn-register">Đăng Ký</Link>
+                                        {
+                                            isLogin ?
+                                                <Link to="/don-hang-cua-toi.html" class="btn-logout">Đơn hàng của tôi</Link>
+                                                :
+                                                <Link to="#" onClick={() => handlePopupRegister()}
+                                                    className="btn-register">Đăng Ký</Link>
+                                        }
                                     </li>
                                     <li>
-                                        <Link to="#" onClick={() => handlePopupLogin()}
-                                            className="btn-login">Đăng Nhập</Link>
+                                        {isLogin ?
+                                            <>
+                                                <Link to="#" class="btn-account dropdown-toggle" data-toggle="dropdown"
+                                                    id="dropdownMenu">{loggedUser.name}</Link>
+                                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                                                    <li><Link to="/thong-tin-tai-khoan.html">Thông tin tài khoản</Link></li>
+                                                    <li><Link to="/dia-chi-giao-hang-mac-dinh.html">Địa chỉ giao hàng</Link></li>
+                                                    <li><Link to="/don-hang-cua-toi.html">Đơn hàng của tôi</Link></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><Link to="#" onClick={(e) => handleLogout(e)}>Thoát</Link></li>
+                                                </ul>
+                                            </>
+                                            :
+                                            <Link to="#" onClick={() => handlePopupLogin()}
+                                                className="btn-login">Đăng Nhập</Link>
+                                        }
                                     </li>
                                 </ul>
                             </div>
@@ -112,14 +146,15 @@ export default function Header() {
                                 <NavLink to="/">Trang chủ</NavLink>
                             </li>
                             <li><NavLink to="/san-pham.html">Sản phẩm </NavLink></li>
-                            <li><NavLink to="chinh-sach-doi-tra.html">Chính sách đổi trả</NavLink></li>
-                            <li><NavLink to="chinh-sach-thanh-toan.html">Chính sách thanh toán</NavLink></li>
-                            <li><NavLink to="chinh-sach-giao-hang.html">Chính sách giao hàng</NavLink></li>
-                            <li><NavLink to="lien-he.html">Liên hệ</NavLink></li>
+                            <li><NavLink to="/chinh-sach-doi-tra.html">Chính sách đổi trả</NavLink></li>
+                            <li><NavLink to="/chinh-sach-thanh-toan.html">Chính sách thanh toán</NavLink></li>
+                            <li><NavLink to="/chinh-sach-giao-hang.html">Chính sách giao hàng</NavLink></li>
+                            <li><NavLink to="/lien-he.html">Liên hệ</NavLink></li>
                         </ul>
                         <span className="hidden-lg hidden-md experience">Trải nghiệm cùng sản phẩm của Goda</span>
                         <ul className="nav navbar-nav navbar-right">
-                            <li className="cart"><Link onClick={() => handlePopupCart()} to="#" className="btn-cart-detail" title="Giỏ Hàng"><i className="fa fa-shopping-cart" /> <span className="number-total-product">6</span></Link></li>
+                            <li className="cart"><Link onClick={() => handlePopupCart()} to="#" className="btn-cart-detail" title="Giỏ Hàng"><i className="fa fa-shopping-cart" />
+                                <span className="number-total-product">{totalItem}</span></Link></li>
                         </ul>
                     </div>
                 </nav>

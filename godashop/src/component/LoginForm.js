@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { POPUP_CLOSE, POPUP_FORGOT_PASS, POPUP_LOGIN } from '../const/PopupConstant';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -9,6 +9,7 @@ import { axiosNonAuthInstance } from '../helper/util';
 import { toast } from 'react-toastify';
 import { LOGIN } from '../const/AuthConstant';
 export default function LoginForm() {
+    const navigate = useNavigate();
     const popup_type = useSelector(state => state.PopupReducer.popup_type);
     console.log('popup_type', popup_type);
     //fade là không hiển thị 
@@ -24,6 +25,7 @@ export default function LoginForm() {
         // đẩy  action lên store để reducer xử lý 
         const action = { type: POPUP_FORGOT_PASS };
         dispatch(action)
+
     }
 
     const formik = useFormik({
@@ -50,7 +52,7 @@ export default function LoginForm() {
                     (`/login`, JSON.stringify(values));
                 const data = response.data;
                 console.log(data);
-                toast.success('Đăng nhập thành công');
+                // toast.success('Đăng nhập thành công');
                 //dispatch action bao gồm cả access token và thông tin user lên store
                 const action = {
                     type: LOGIN,
@@ -60,6 +62,8 @@ export default function LoginForm() {
                     }
                 }
                 dispatch(action);
+                // Sau khi login sẽ điều hướng vào trang thông tin tài khoản   
+                navigate('/thong-tin-tai-khoan.html');
             }
             catch (error) {
                 console.log(error);

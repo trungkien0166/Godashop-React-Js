@@ -7,6 +7,7 @@ import Loading from '../component/Loading';
 import { useParams } from 'react-router-dom';
 
 export default function ProductDetail() {
+
     const { slug } = useParams();
     const productId = getProductId(slug);
     const priceRange = '';
