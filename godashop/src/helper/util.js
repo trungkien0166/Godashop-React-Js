@@ -3,8 +3,6 @@ import slugify from "react-slugify";
 import numeral from 'numeral';
 import 'numeral/locales';
 numeral.locale('vi');
-
-
 // newParams là object
 export const updateParam = (searchParams, setSearchParams, newParams) => {
     var params = {}
@@ -102,7 +100,7 @@ export const pre_add_to_cart = (arr, input) => {
 
     const index = newArray.findIndex((item) => item.id === input.id);
     if (index !== -1) {
-        newArray[index].qty++;
+        newArray[index].qty += Number(input.qty);
     }
     else {
         newArray.push(input)
@@ -119,6 +117,23 @@ export const pre_remove_to_cart = (arr, id) => {
     const index = newArray.findIndex((item) => item.id === id);
     if (index !== -1) {
         newArray.splice(index, 1)
+    }
+    return newArray;
+
+}
+// viết hàm update sản phẩm đã có trong giỏ hàng
+export const pre_update_cart = (arr, input) => {
+    // kiểm tra  có bị trùng không ,nếu trung trả về số phần tử bị trùng
+    // nếu không trùng trả về giá trị -1
+    // giúp tăng tốc tính toán , không ảnh hưởng đến state trước
+    const newArray = JSON.parse(JSON.stringify(arr));
+
+    const index = newArray.findIndex((item) => item.id === input.id);
+    if (index !== -1) {
+        newArray[index].qty = Number(input.qty);
+    }
+    else {
+        newArray.push(input)
     }
     return newArray;
 

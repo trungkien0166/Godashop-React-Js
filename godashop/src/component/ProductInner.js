@@ -6,14 +6,14 @@ import RelatedProductSlider from './RelatedProductSlider';
 import CommentForm from './CommentForm';
 import ProductSlider from './ProductSlider';
 import { axiosNonAuthInstance, formatMoney } from '../helper/util';
-
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { ADD_TO_CART } from '../const/CartConstant';
 
 export default function ProductInner({ product }) {
-
-
     const [comments, setComments] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-
     const getComments = async () => {
         setIsLoaded(false); // resets lại trước khi call api 
         try {
@@ -47,6 +47,33 @@ export default function ProductInner({ product }) {
         getComments();
         //eslint-disable-next-line
     }, [])
+    const dispatch = useDispatch();
+    const handleAddProductToCartInner = async (id, e) => {
+        const addToCarLink = e.target;
+        const previousInput = addToCarLink.previousElementSibling;
+        const qty = previousInput.value;
+        try {
+            console.log(new Date());
+            const response = await axiosNonAuthInstance().get(`/products/${id}`);
+            const product = response.data;
+            const item = {
+                id: product.id,
+                name: product.name,
+                featured_image: product.featured_image,
+                sale_price: product.sale_price,
+                qty: qty
+            };
+
+            // tạo action để dispatch lên store
+            const action = { type: ADD_TO_CART, payload: item };
+            dispatch(action);
+        }
+        catch (error) {
+
+            console.log(error);
+            toast.error(error?.response?.data || error.message)
+        }
+    }
     return (
         <>
             <div className="row product-info">
@@ -75,6 +102,10 @@ export default function ProductInner({ product }) {
                                 : null
                         }
                         <span className="product-item-discount">{formatMoney(product.sale_price)}₫</span>
+                    </div>
+                    <div className="input-group">
+                        <input type="number" className="product-quantity form-control" defaultValue={1} min={1} />
+                        <Link href="#" onClick={(e) => handleAddProductToCartInner(product.id, e)} product-id={2} className="buy-in-detail btn btn-success cart-add-button"><i className="fa fa-shopping-cart" /> Thêm vào giỏ hàng</Link>
                     </div>
                 </div>
             </div>

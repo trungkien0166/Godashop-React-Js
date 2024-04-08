@@ -28,7 +28,7 @@ export default function Header() {
     const isLogin = useSelector(state => state.AuthReducer.isLogin);
     const loggedUser = useSelector(state => state.AuthReducer.loggedUser);
     const cartItems = useSelector(state => state.CartReducer.cartItems);
-    const totalItem = cartItems.reduce((total, item) => total + item.qty, 0)
+    const totalItem = cartItems.reduce((total, item) => total + Number(item.qty), 0)
     // console.log('Trạng thái login', isLogin);
     const handleLogout = (e) => {
         // ngăn chặn chạy href thẻ a

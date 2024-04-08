@@ -12,6 +12,7 @@ import Account from '../page/Account';
 import ProtectedRouter from './ProtectedRouter';
 import Order from '../page/Order';
 import OrderDetail from '../page/OrderDetail';
+import Checkout from '../page/Checkout';
 //trang chủ
 export default function Router() {
     return (
@@ -33,6 +34,8 @@ export default function Router() {
                         {<ProtectedRouter>< Order /></ProtectedRouter>} />
                     <Route path="/don-hang/:slug" element=
                         {<ProtectedRouter>< OrderDetail /></ProtectedRouter>} />
+                    <Route path="/checkout" element=
+                        {<ProtectedRouter>< Checkout /></ProtectedRouter>} />
                 </Route>
 
             </Routes >

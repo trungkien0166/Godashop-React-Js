@@ -21,7 +21,7 @@ export default function ForgotPassword() {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header bg-color">
-                            <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <button onClick={() => handleClosePopup()} type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             <h3 className="modal-title text-center">Quên mật khẩu</h3>
                         </div>
                         <form action="#" method="POST">

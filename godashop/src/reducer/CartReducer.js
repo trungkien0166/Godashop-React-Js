@@ -1,5 +1,5 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, } from "../const/CartConstant";
-import { pre_add_to_cart, pre_remove_to_cart } from "../helper/util";
+import { ADD_TO_CART, EMTY_CART, REMOVE_FROM_CART, UPDATE_QTY, } from "../const/CartConstant";
+import { pre_add_to_cart, pre_remove_to_cart, pre_update_cart } from "../helper/util";
 
 const cart = localStorage.getItem('cart');
 let initialState;
@@ -41,7 +41,31 @@ const CartReducer = (state = initialState, action) => {
                 return newCart;
                 // chưa tối ưu ,cần xử lý, làm tạm đỡ 
             }
+        case UPDATE_QTY:
+            {
+                // chưa tối ưu ,cần xử lý, làm tạm đỡ 
+                const newCart = {
+                    cartItems: pre_update_cart(state.cartItems, action.payload)
+                }
 
+                // Lưu xuống localstorage của trình duyệt,
+                // để lần sau mở trình duyệt lên nó vẫn còn giỏ hàng
+                localStorage.setItem('cart', JSON.stringify(newCart));
+                return newCart;
+                // chưa tối ưu ,cần xử lý, làm tạm đỡ 
+            }
+        case EMTY_CART:
+            {
+                // chưa tối ưu ,cần xử lý, làm tạm đỡ 
+                const newCart = {
+                    cartItems: []
+                }
+                // Lưu xuống localstorage của trình duyệt,
+                // để lần sau mở trình duyệt lên nó vẫn còn giỏ hàng
+                localStorage.removeItem('cart');
+                return newCart;
+                // chưa tối ưu ,cần xử lý, làm tạm đỡ 
+            }
         default:
             return state;// luôn luôn là chữ state
     }
